@@ -1,0 +1,13 @@
+﻿XÂY DỰNG CORE
+1. Entities: những class mô tả lại các thành phần trong db
+2. Exception: ngoại lệ
+3. Interfaces: bao bọc Core, các thành phần khác muốn giao dịch với Core phải đi qua Interfaces
+	trong interfaces chứa 2 loại "hợp đồng" cho 2 nhóm giao dịch:
+		- service: xử lý nghiệp vụ cho WEB APP và cung cấp dữ liệu cho nó
+		- infrastructure (or repository): lấy liệu từ db, giao dịch với INFRASTRUCTURE
+
+
+Interface (trừu tượng): chỉ có đầu vào, đầu ra. không quan tâm logic. (logic được thực hiện bởi các class implement nó)
+Đa hình (overload, override): overload đc thể hiện vd như 2 method cùng tên, khác tham số
+	override: (ghi đè) thực hiện ghi đè method gốc, thực thi 1 cách khác với bản gốc
+Kế thừa: class con đc thừa hưởng hết những gì có trong class cha
