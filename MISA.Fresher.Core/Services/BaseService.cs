@@ -46,17 +46,24 @@ namespace MISA.Fresher.Core.Services
             // Kiểm tra các thông tin bắt buộc nhập
             // 1. Kiểm tra tất cả các props của đối tượng
             var properties = typeof(T).GetProperties();
+
             foreach (var prop in properties)
             {
+                // Lấy ra tên gốc của Property đang duyệt
                 var propNameOriginal = prop.Name;
+                // Set tên hiển thị cho Prop đang duyệt
                 var propNameDisplay = propNameOriginal;
+                // Lấy ra giá trị của property đang duyệt
                 var propValue = prop.GetValue(entity);
-                var propType = prop.PropertyType;
+
+
                 var propNotEmpties = prop.GetCustomAttributes(typeof(NotEmpty), true);
+                // Lấy ra tên hiển thị nếu được đặt attr PropertyName
                 var propPropertyNames = prop.GetCustomAttributes(typeof(PropertyName), true);
                 var propMaxLengths = prop.GetCustomAttributes(typeof(MaxLength), true);
                 var propUniques = prop.GetCustomAttributes(typeof(Unique), true);
-                // Lấy ra tên hiển thị nếu được đặt attr PropertyName
+
+                // Nếu được đặt attr PropertyName
                 if (propPropertyNames.Length > 0)
                 {
                     propNameDisplay = (propPropertyNames[0] as PropertyName).Name;
@@ -65,11 +72,10 @@ namespace MISA.Fresher.Core.Services
                 if (propNotEmpties.Length > 0)
                 {
                     // Nếu không hợp lệ thì hiển thị cảnh báo hoặc đánh dấu trạng thái không hợp lệ:
-                    if (string.IsNullOrEmpty(propValue.ToString().Trim()) || propValue == null)
+                    if (propValue == null || string.IsNullOrEmpty(propValue.ToString().Trim()))
                     {
                         errMsg.Add($"Thông tin {propNameDisplay} không được phép để trống.");
                     }
-
                 }
                 // Nếu được đặt attr Unique - duy nhất:
                 if (propUniques.Length > 0 && !(propValue == null || string.IsNullOrEmpty(propValue.ToString().Trim())))
@@ -79,7 +85,7 @@ namespace MISA.Fresher.Core.Services
                         errMsg.Add($"Thông tin {propNameDisplay} đã tồn tại.");
                     }
                 }
-                // Lấy ra maxlength nếu được đặt attr MaxLength
+                // Nếu được đặt attr MaxLength
                 if (propMaxLengths.Length > 0)
                 {
                     var length = (propMaxLengths[0] as MaxLength).Length;
@@ -97,14 +103,73 @@ namespace MISA.Fresher.Core.Services
             }
             return true;
         }
+
+        /// <summary>
+        /// Thực hiện Validate dữ liệu đặc thù cho từng đối tượng
+        /// </summary>
+        /// <param name="entity">Đối tượng</param>
+        /// <returns>true - dữ liệu hợp lệ; false - dữ liệu không hợp lệ</returns>
+        /// createdBy: CTKimYen (17/12/2021)
         protected virtual bool ValidateObjCustom(T entity)
         {
+            List<string> errMsg = new List<string>();
+            // Kiểm tra các thông tin bắt buộc nhập
+            // 1. Kiểm tra tất cả các props của đối tượng
+            var properties = typeof(T).GetProperties();
+
+            foreach (var prop in properties)
+            {
+                // Lấy ra tên gốc của Property đang duyệt
+                var propNameOriginal = prop.Name;
+                // Set tên hiển thị cho Prop đang duyệt
+                var propNameDisplay = propNameOriginal;
+                // Lấy ra giá trị của property đang duyệt
+                var propValue = prop.GetValue(entity);
+
+
+                // Lấy ra tên hiển thị nếu được đặt attr PropertyName
+                var propPropertyNames = prop.GetCustomAttributes(typeof(PropertyName), true);
+                var propUniques = prop.GetCustomAttributes(typeof(Unique), true);
+
+                // Nếu được đặt attr PropertyName
+                if (propPropertyNames.Length > 0)
+                {
+                    propNameDisplay = (propPropertyNames[0] as PropertyName).Name;
+                }
+                // Nếu được đặt attr Unique - duy nhất:
+                if (propUniques.Length > 0 && !(propValue == null || string.IsNullOrEmpty(propValue.ToString().Trim())))
+                {
+                    if (_baseRepository.CheckExist(propNameOriginal, propValue.ToString().Trim()))
+                    {
+                        errMsg.Add($"Thông tin {propNameDisplay} đã tồn tại.");
+                    }
+                }
+
+            }
+            // Nếu có lỗi ném ra một ngoại lệ MISAResponseNotValidException
+            if (errMsg.Count() > 0)
+            {
+                throw new MISAResponseNotValidException(errMsg);
+            }
             return true;
         }
 
         public int Update(T entity, Guid entityId)
         {
-            throw new NotImplementedException();
+            // validate chung - cho base xử lý
+            //var isValid = ValidateObject(entity);
+
+            //if (isValid)
+            //{
+            //    // Validate đặc thù cho từng đối tượng -> cho các services con tự xử lý
+            //    if (ValidateObjCustom(entity))
+            //    {
+                    var res = _baseRepository.Update(entity, entityId);
+                    return res;
+            //    }
+            //}
+
+            //return 0;
         }
     }
 }

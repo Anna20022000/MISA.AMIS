@@ -36,29 +36,42 @@ namespace MISA.Fresher.Api.Controllers
         /// <summary>
         /// Lấy đối tượng theo khóa chính
         /// </summary>
-        /// <param name="entityId">Khóa chính</param>
+        /// <param name="Id">Khóa chính</param>
         /// <returns>Đối tượng có khóa chính cần lấy</returns>
-        [HttpGet("GetById")]
-        public IActionResult GetById(Guid entityId)
+        [HttpGet("{Id}")]
+        public IActionResult GetById(Guid Id)
         {
-            var entity = _baseRepository.GetById(entityId);
-            if(entity.Count() > 0)
-            {
-                return Ok(entity);
-            }
-            return null;
+            var entity = _baseRepository.GetById(Id);
+            return Ok(entity);
         }
 
         /// <summary>
         /// Thêm mới bản ghi vào trong cơ sở dữ liệu
         /// </summary>
         /// <param name="entity">Đối tượng</param>
-        /// <returns></returns>
+        /// <returns>Số bản ghi thêm mới thành công</returns>
         [HttpPost]
         public IActionResult Insert(T entity)
         {
             var res = _baseService.Insert(entity);
             return StatusCode(201, res);
+        }
+
+        /// <summary>
+        /// Cập nhật bản ghi vào cơ sở dữ liệu
+        /// </summary>
+        /// <param name="entity">Đối tượng cần sửa</param>
+        /// <param name="entityId">Khóa chính của đối tượng</param>
+        /// <returns>Số bản ghi cập nhật thành công</returns>
+        [HttpPut("{Id}")]
+        public IActionResult Update(T entity, Guid Id)
+        {
+            var res = _baseService.Update(entity, Id);
+            if (res > 0)
+            {
+                return StatusCode(200, res);
+            }
+            return null;
         }
 
         /// <summary>
@@ -70,7 +83,7 @@ namespace MISA.Fresher.Api.Controllers
         public IActionResult Delete(Guid entityId)
         {
             var res = _baseRepository.Delete(entityId);
-            if(res > 0)
+            if (res > 0)
             {
                 return StatusCode(200, res);
             }

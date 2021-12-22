@@ -39,7 +39,7 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// Ngày tạo
         /// </summary>
-        public DateTime? CreateDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         /// <summary>
         /// Người tạo

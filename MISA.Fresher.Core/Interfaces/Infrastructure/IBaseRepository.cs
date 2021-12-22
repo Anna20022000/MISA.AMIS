@@ -48,6 +48,12 @@ namespace MISA.Fresher.Core.Interfaces.Infrastructure
         /// createdBy: CTKimYen (15/12/2021)
         public int Delete(Guid entityId);
 
+        /// <summary>
+        /// Thực hiện kiểm tra xem giá trị của property đó có tồn tại trong csdl không
+        /// </summary>
+        /// <param name="propName">Tên property của đối tượng</param>
+        /// <param name="condition">Giá trị của property đó</param>
+        /// <returns>True - tồn tại; False - không tồn tại</returns>
         public bool CheckExist(string propName, string condition);
         
 

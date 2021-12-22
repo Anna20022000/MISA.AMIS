@@ -23,7 +23,7 @@ namespace MISA.Fresher.Infrastructure.Repository
             using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
             {
                 // Thực thi lấy dữ liệu trong db:
-                var entities = sqlConnection.Query<Employee>(sql: $"SELECT * FROM {_className}");
+                var entities = sqlConnection.Query<Employee>(sql: $"SELECT * FROM View_{_className}");
                 return entities;
             }
         }

@@ -14,11 +14,12 @@ namespace MISA.Fresher.Core.Entities
     /// </summary>
     public class Employee
     {
-        
+
         #region Properties
         /// <summary>
         /// khóa chính
         /// </summary>
+        [PropertyName("Khóa chính")]
         public Guid EmployeeId { get; set; }
 
         /// <summary>
@@ -44,6 +45,7 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// Lấy ra tên giới tính (Nam/ Nữ/ Khác)
         /// </summary>
+        [ReadOnly]
         public string GenderName
         {
             get
@@ -88,6 +90,12 @@ namespace MISA.Fresher.Core.Entities
         /// khóa ngoại - mã phòng ban
         /// </summary>
         public Guid? DepartmentId { get; set; }
+
+        /// <summary>
+        /// Tên phòng ban
+        /// </summary>
+        [ReadOnly]
+        public string DepartmentName { get; set; }
 
         /// <summary>
         /// Tên vị trí/ chức vụ

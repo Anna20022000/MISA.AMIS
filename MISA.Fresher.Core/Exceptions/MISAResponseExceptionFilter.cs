@@ -38,7 +38,7 @@ namespace MISA.Fresher.Core.Exceptions
             {
                 var result = new
                 {
-                    devMsg = "",
+                    devMsg = context.Exception.Message,
                     userMsg = MISA.Fresher.Core.Properties.Resources.ExceptionUserMsgError,
                     data = DBNull.Value,
                     moreInfo = ""

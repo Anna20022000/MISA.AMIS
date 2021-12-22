@@ -25,6 +25,7 @@ namespace MISA.Fresher.Core.MISAAttribute
     {
 
     }
+
     /// <summary>
     /// Attribute để đặt tên cho property - sử dụng để đánh dấu phục vụ cho validate
     /// CreatedBy: CTKYen (17/12/2021)
@@ -51,6 +52,27 @@ namespace MISA.Fresher.Core.MISAAttribute
         {
             this.Length = length;
         }
+    }
+
+
+    /// <summary>
+    /// Attribute để xác định property chỉ hiển thị, không lưu vào csdl
+    /// CreatedBy: CTKYen (19/12/2021)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ReadOnly : Attribute
+    {
+    }
+
+
+    /// <summary>
+    /// Attribute để kiểm tra định dạng Email cho property - sử dụng để đánh dấu phục vụ cho validate
+    /// CreatedBy: CTKYen (22/12/2021)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class Email : Attribute
+    {
+
     }
 
 
