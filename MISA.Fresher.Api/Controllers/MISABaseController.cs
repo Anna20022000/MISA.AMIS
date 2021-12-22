@@ -26,12 +26,27 @@ namespace MISA.Fresher.Api.Controllers
         /// <summary>
         /// Lấy toàn bộ dữ liệu
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
             var entities = _baseRepository.GetAll();
             return Ok(entities);
+        }
+
+        /// <summary>
+        /// Lấy đối tượng theo khóa chính
+        /// </summary>
+        /// <param name="entityId">Khóa chính</param>
+        /// <returns>Đối tượng có khóa chính cần lấy</returns>
+        [HttpGet("GetById")]
+        public IActionResult GetById(Guid entityId)
+        {
+            var entity = _baseRepository.GetById(entityId);
+            if(entity.Count() > 0)
+            {
+                return Ok(entity);
+            }
+            return null;
         }
 
         /// <summary>
@@ -44,6 +59,22 @@ namespace MISA.Fresher.Api.Controllers
         {
             var res = _baseService.Insert(entity);
             return StatusCode(201, res);
+        }
+
+        /// <summary>
+        /// Xóa bản ghi dựa vào khóa chính
+        /// </summary>
+        /// <param name="entityId">Khóa chính</param>
+        /// <returns>Số lượng bản ghi xóa thành công</returns>
+        [HttpDelete]
+        public IActionResult Delete(Guid entityId)
+        {
+            var res = _baseRepository.Delete(entityId);
+            if(res > 0)
+            {
+                return StatusCode(200, res);
+            }
+            return null;
         }
     }
 }

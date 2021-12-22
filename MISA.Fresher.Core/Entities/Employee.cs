@@ -25,8 +25,8 @@ namespace MISA.Fresher.Core.Entities
         /// Mã nhân viên
         /// </summary>
         [NotEmpty]
+        [Unique]
         [PropertyName("Mã nhân viên")]
-        [MaxLength(3)]
         public string EmployeeCode { get; set; }
 
         /// <summary>
@@ -42,6 +42,18 @@ namespace MISA.Fresher.Core.Entities
         public Gender Gender { get; set; }
 
         /// <summary>
+        /// Lấy ra tên giới tính (Nam/ Nữ/ Khác)
+        /// </summary>
+        public string GenderName
+        {
+            get
+            {
+                var resourceText = MISAEnum.GetEnumTextByEnumName<Gender>(Gender);
+                return resourceText;
+            }
+        }
+
+        /// <summary>
         /// Ngày sinh
         /// </summary>
         public DateTime? DateOfBirth { get; set; }
@@ -49,16 +61,22 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// Số điện thoại
         /// </summary>
+        [Unique]
+        [PropertyName("Số điện thoại di dộng")]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Số điện thoại cố định
         /// </summary>
+        [Unique]
+        [PropertyName("Số điện thoại cố định")]
         public string TelephoneNumber { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
+        [Unique]
+        [PropertyName("Email")]
         public string Email { get; set; }
 
         /// <summary>

@@ -20,9 +20,28 @@ namespace MISA.Fresher.Infrastructure.Repository
             _connectionString = configuration.GetConnectionString("CukCuk");
             _className = typeof(T).Name;
         }
+
+        public bool CheckExist(string propName, string condition)
+        {
+            // khởi tạo kết nối với db:
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+            {
+                // Thực thi lấy dữ liệu trong db:
+                var entitiy = sqlConnection.Query<T>(sql: $"SELECT * FROM {_className} WHERE {propName} = '{condition}'");
+                return true;
+            }
+            return false;
+        }
+
         public int Delete(Guid entityId)
         {
-            throw new NotImplementedException();
+            // khởi tạo kết nối với db:
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+            {
+                // Thực thi lấy dữ liệu trong db:
+                var entitiy = sqlConnection.Query<T>(sql: $"DELETE FROM {_className} WHERE {_className}Id = '{entityId}'");
+                return 1;
+            }
         }
 
         public virtual IEnumerable<T> GetAll()
@@ -36,14 +55,20 @@ namespace MISA.Fresher.Infrastructure.Repository
             }
         }
 
-        public int GetById()
+        public IEnumerable<T> GetById(Guid entityId)
         {
-            throw new NotImplementedException();
+            // khởi tạo kết nối với db:
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+            {
+                // Thực thi lấy dữ liệu trong db:
+                var entitiy = sqlConnection.Query<T>(sql: $"SELECT * FROM {_className} WHERE {_className}Id = '{entityId}'");
+                return entitiy;
+            }
         }
 
         public int Insert(T entity)
         {
-            //
+            // khởi tạo kết nối với db:
             using (MySqlConnection mySqlConnection = new MySqlConnection(_connectionString))
             {
                 DynamicParameters parameters = new DynamicParameters();

@@ -8,6 +8,12 @@ namespace MISA.Fresher.Core.Enum
 {
     public static class MISAEnum
     {
+        /// <summary>
+        /// Thực thi lấy ra Resources tương ứng với Enum
+        /// </summary>
+        /// <typeparam name="T">Đối tượng Enum</typeparam>
+        /// <param name="misaEnum">Đối tượng Enum</param>
+        /// <returns>Resources tương ứng</returns>
         public static string GetEnumTextByEnumName<T>(T misaEnum)
         {
             var enumPropertyName = misaEnum.ToString();

@@ -55,18 +55,28 @@ namespace MISA.Fresher.Core.Services
                 var propNotEmpties = prop.GetCustomAttributes(typeof(NotEmpty), true);
                 var propPropertyNames = prop.GetCustomAttributes(typeof(PropertyName), true);
                 var propMaxLengths = prop.GetCustomAttributes(typeof(MaxLength), true);
+                var propUniques = prop.GetCustomAttributes(typeof(Unique), true);
                 // Lấy ra tên hiển thị nếu được đặt attr PropertyName
                 if (propPropertyNames.Length > 0)
                 {
                     propNameDisplay = (propPropertyNames[0] as PropertyName).Name;
                 }
-                // 2. Nếu được đặt attribute NotEmpty:
+                // Nếu được đặt attribute NotEmpty:
                 if (propNotEmpties.Length > 0)
                 {
-                    // 3. Nếu không hợp lệ thì hiển thị cảnh báo hoặc đánh dấu trạng thái không hợp lệ:
+                    // Nếu không hợp lệ thì hiển thị cảnh báo hoặc đánh dấu trạng thái không hợp lệ:
                     if (string.IsNullOrEmpty(propValue.ToString().Trim()) || propValue == null)
                     {
                         errMsg.Add($"Thông tin {propNameDisplay} không được phép để trống.");
+                    }
+
+                }
+                // Nếu được đặt attr Unique - duy nhất:
+                if (propUniques.Length > 0 && !(propValue == null || string.IsNullOrEmpty(propValue.ToString().Trim())))
+                {
+                    if (_baseRepository.CheckExist(propNameOriginal, propValue.ToString().Trim()))
+                    {
+                        errMsg.Add($"Thông tin {propNameDisplay} đã tồn tại.");
                     }
                 }
                 // Lấy ra maxlength nếu được đặt attr MaxLength
@@ -78,6 +88,7 @@ namespace MISA.Fresher.Core.Services
                         errMsg.Add($"Thông tin {propNameDisplay} không được dài quá {length} ký tự.");
                     }
                 }
+
             }
             // Nếu có lỗi ném ra một ngoại lệ MISAResponseNotValidException
             if (errMsg.Count() > 0)

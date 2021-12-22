@@ -79,7 +79,7 @@ namespace MISA.Fresher.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nam.
+        ///   Looks up a localized string similar to Nữ.
         /// </summary>
         public static string VI_Enum_Gender_Female {
             get {
@@ -88,11 +88,20 @@ namespace MISA.Fresher.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nữ.
+        ///   Looks up a localized string similar to Nam.
         /// </summary>
         public static string VI_Enum_Gender_Male {
             get {
                 return ResourceManager.GetString("VI_Enum_Gender_Male", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giới tính khác.
+        /// </summary>
+        public static string VI_Enum_Gender_Other {
+            get {
+                return ResourceManager.GetString("VI_Enum_Gender_Other", resourceCulture);
             }
         }
     }

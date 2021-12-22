@@ -124,9 +124,12 @@
     <value>Có lỗi xảy ra vui lòng liên hệ MISA để được trợ giúp.</value>
   </data>
   <data name="VI_Enum_Gender_Female" xml:space="preserve">
-    <value>Nam</value>
+    <value>Nữ</value>
   </data>
   <data name="VI_Enum_Gender_Male" xml:space="preserve">
-    <value>Nữ</value>
+    <value>Nam</value>
+  </data>
+  <data name="VI_Enum_Gender_Other" xml:space="preserve">
+    <value>Giới tính khác</value>
   </data>
 </root>

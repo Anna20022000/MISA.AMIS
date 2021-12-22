@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.Fresher.Core.MISAAttribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,15 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// Mã phòng ban
         /// </summary>
+        [NotEmpty]
+        [Unique]
+        [PropertyName("Mã phòng ban")]
         public string DepartmentCode { get; set; }
         /// <summary>
         /// Tên phòng ban
         /// </summary>
+        [NotEmpty]
+        [PropertyName("Tên phòng ban")]
         public string DepartmentName { get; set; }
         /// <summary>
         /// Mô tả

@@ -17,7 +17,16 @@ namespace MISA.Fresher.Core.MISAAttribute
     }
 
     /// <summary>
-    /// Attribute để đặt tên cho property
+    /// Attribute cung cấp cho các properties không được phép trùng - sử dụng để đánh dấu phục vụ cho validate
+    /// CreatedBy: CTKYen (17/12/2021)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class Unique : Attribute
+    {
+
+    }
+    /// <summary>
+    /// Attribute để đặt tên cho property - sử dụng để đánh dấu phục vụ cho validate
     /// CreatedBy: CTKYen (17/12/2021)
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
@@ -31,7 +40,7 @@ namespace MISA.Fresher.Core.MISAAttribute
     }
 
     /// <summary>
-    /// Attribute để xác định độ dài tối đa cho property
+    /// Attribute để xác định độ dài tối đa cho property - sử dụng để đánh dấu phục vụ cho validate
     /// CreatedBy: CTKYen (17/12/2021)
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
