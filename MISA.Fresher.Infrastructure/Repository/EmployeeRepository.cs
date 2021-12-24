@@ -28,25 +28,56 @@ namespace MISA.Fresher.Infrastructure.Repository
             }
         }
 
-        public object GetPaging(int limit, int pageIndex)
+        public object GetPaging(int limit, int pageIndex, string searchText)
         {
             // khởi tạo kết nối với db:
             using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
             {
-                var sql = $"Proc_GetEmployeePaging";
+                var sql = "Proc_GetEmployeePaging";
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("m_SearchText", "");
+                parameters.Add("m_SearchText", searchText);
                 parameters.Add("m_PageSize", limit);
                 parameters.Add("m_PageIndex", pageIndex);
                 parameters.Add("m_TotalRecord", direction: ParameterDirection.Output);
+                parameters.Add("m_TotalPage", direction: ParameterDirection.Output);
                 // Thực thi lấy dữ liệu trong db:
                 var entities = sqlConnection.Query<Employee>(sql, param: parameters, commandType: CommandType.StoredProcedure);
                 var totalRecord = parameters.Get<int>("m_TotalRecord");
+                var totalPage = parameters.Get<int>("m_TotalPage");
 
                 return new {
                     TotalRecord = totalRecord,
+                    TotalPage = totalPage,
                     Data = entities
                 };
+            }
+        }
+
+        public string GetNewCode()
+        {
+            // khởi tạo kết nối với db:
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+            {
+                var sql = $"Proc_GetNewEmployeeCode";
+                // Thực thi lấy dữ liệu trong db:
+                var newCode = sqlConnection.Query<string>(sql, commandType: CommandType.StoredProcedure);
+                return newCode.FirstOrDefault();
+            }
+        }
+
+        public int DeleteMultiRecord(string ListEntityIds)
+        {
+            var sql = "Proc_DeleteMultiEmployee";
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("m_ListEmployeeId", ListEntityIds, DbType.String);
+
+            // khởi tạo kết nối với db:
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+            {
+                // Thực thi lấy dữ liệu trong db:
+                var rowAffected = sqlConnection.Execute(sql, param: parameters, commandType: CommandType.StoredProcedure);
+                return rowAffected;
             }
         }
     }

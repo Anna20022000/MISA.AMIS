@@ -74,6 +74,15 @@ namespace MISA.Fresher.Core.MISAAttribute
     {
 
     }
+    /// <summary>
+    /// Attribute để kiểm tra định dạng Số điện thoại cho property - sử dụng để đánh dấu phục vụ cho validate
+    /// CreatedBy: CTKYen (23/12/2021)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class PhoneNumber : Attribute
+    {
+
+    }
 
 
 }

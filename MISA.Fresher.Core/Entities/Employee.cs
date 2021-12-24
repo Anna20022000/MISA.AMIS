@@ -46,6 +46,7 @@ namespace MISA.Fresher.Core.Entities
         /// Lấy ra tên giới tính (Nam/ Nữ/ Khác)
         /// </summary>
         [ReadOnly]
+        [PropertyName("Giới tính")]
         public string GenderName
         {
             get
@@ -58,26 +59,28 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// Ngày sinh
         /// </summary>
+        [PropertyName("Ngày sinh")]
         public DateTime? DateOfBirth { get; set; }
 
         /// <summary>
         /// Số điện thoại
         /// </summary>
         [Unique]
-        [PropertyName("Số điện thoại di dộng")]
+        [PhoneNumber]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Số điện thoại cố định
         /// </summary>
         [Unique]
-        [PropertyName("Số điện thoại cố định")]
+        [PhoneNumber]
         public string TelephoneNumber { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
         [Unique]
+        [Email]
         [PropertyName("Email")]
         public string Email { get; set; }
 
@@ -95,11 +98,13 @@ namespace MISA.Fresher.Core.Entities
         /// Tên phòng ban
         /// </summary>
         [ReadOnly]
+        [PropertyName("Phòng ban")]
         public string DepartmentName { get; set; }
 
         /// <summary>
         /// Tên vị trí/ chức vụ
         /// </summary>
+        [PropertyName("Chức danh")]
         public string PositionName { get; set; }
 
         /// <summary>
@@ -120,11 +125,13 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// tài khoản ngân hàng
         /// </summary>
+        [PropertyName("Số tài khoản ngân hàng")]
         public string BankAccount { get; set; }
 
         /// <summary>
         /// tên ngân hàng
         /// </summary>
+        [PropertyName("Tên ngân hàng")]
         public string BankName { get; set; }
 
         /// <summary>

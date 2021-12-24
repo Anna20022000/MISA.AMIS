@@ -42,7 +42,11 @@ namespace MISA.Fresher.Api.Controllers
         public IActionResult GetById(Guid Id)
         {
             var entity = _baseRepository.GetById(Id);
-            return Ok(entity);
+            if (entity != null)
+            {
+                return Ok(entity);
+            }
+            return StatusCode(204, null);
         }
 
         /// <summary>
@@ -77,17 +81,18 @@ namespace MISA.Fresher.Api.Controllers
         /// <summary>
         /// Xóa bản ghi dựa vào khóa chính
         /// </summary>
-        /// <param name="entityId">Khóa chính</param>
+        /// <param name="Id">Khóa chính</param>
         /// <returns>Số lượng bản ghi xóa thành công</returns>
-        [HttpDelete]
-        public IActionResult Delete(Guid entityId)
+        [HttpDelete("{Id}")]
+        public IActionResult Delete(Guid Id)
         {
-            var res = _baseRepository.Delete(entityId);
+            var res = _baseRepository.Delete(Id);
             if (res > 0)
             {
                 return StatusCode(200, res);
             }
             return null;
         }
+
     }
 }

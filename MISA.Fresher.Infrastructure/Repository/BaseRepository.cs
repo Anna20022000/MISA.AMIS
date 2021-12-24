@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using MISA.Fresher.Core.Entities;
+using MISA.Fresher.Core.Enum;
 using MISA.Fresher.Core.Interfaces.Infrastructure;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,13 +23,13 @@ namespace MISA.Fresher.Infrastructure.Repository
             _className = typeof(T).Name;
         }
 
-        public bool CheckExist(string propName, string condition)
+        public bool CheckExist(string propName, string propValue, string entityId)
         {
             // khởi tạo kết nối với db:
             using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
             {
                 // Thực thi lấy dữ liệu trong db:
-                var entitiy = sqlConnection.Query<T>(sql: $"SELECT * FROM {_className} WHERE {propName} = '{condition}'");
+                var entitiy = sqlConnection.Query<T>(sql: $"SELECT * FROM {_className} WHERE {propName} = '{propValue}' AND {_className}Id != '{entityId}' ");
                 if (entitiy.Count() > 0)
                 {
                     return true;
@@ -47,6 +49,7 @@ namespace MISA.Fresher.Infrastructure.Repository
             }
         }
 
+
         public virtual IEnumerable<T> GetAll()
         {
             // khởi tạo kết nối với db:
@@ -58,14 +61,15 @@ namespace MISA.Fresher.Infrastructure.Repository
             }
         }
 
-        public IEnumerable<T> GetById(Guid entityId)
+        public T GetById(Guid entityId)
         {
             // khởi tạo kết nối với db:
             using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
             {
                 // Thực thi lấy dữ liệu trong db:
                 var entitiy = sqlConnection.Query<T>(sql: $"SELECT * FROM {_className} WHERE {_className}Id = '{entityId}'");
-                return entitiy;
+                
+                    return entitiy.FirstOrDefault();
             }
         }
 
@@ -142,27 +146,19 @@ namespace MISA.Fresher.Infrastructure.Repository
                     // Nếu prop có chứa attribute ReadOnly thì không thêm vào câu lệnh SQL
                     var propReadOnly = prop.GetCustomAttributes(typeof(MISA.Fresher.Core.MISAAttribute.ReadOnly), true);
 
-                    // Nếu property đó không là Khóa chính và không có attr ReadOnly
-                    if (propReadOnly.Length == 0 && !(propName == $"{_className}Id" && prop.PropertyType == typeof(Guid)))
+                    // Nếu property đó không là Khóa chính, Ngày tạo và không có attr ReadOnly
+                    if (propName != $"{_className}Id" && propReadOnly.Length == 0 && !(propName == "CreatedDate"))
                     {
                         // Nếu prop là ModifiedDate thì set giá trị = ngày giờ hiện tại
-                        if (propName == "ModifiedDate" && prop.PropertyType == typeof(DateTime))
+                        if (propName == "ModifiedDate")
                         {
                             propValue = DateTime.Now;
                         }
-                        // Nếu prop có kiểu dữ liệu là int thì value không chứa dấu ''
-                        if(prop.PropertyType == typeof(int))
-                        {
-                            // Cập nhật vào chuỗi lệnh Sửa và add các tham số = giá trị tương ứng:
-                            setValues += $"{propName} = {propValue},";
-                        }
-                        else
-                        {
-                            // Cập nhật vào chuỗi lệnh Sửa và add các tham số = giá trị tương ứng:
-                            setValues += $"{propName} = '{propValue}',";
-                        }
+                        // Cập nhật câu lệnh sửa
+                        setValues += $"{propName} = @{propName},";
+                        // set giá trị tương ứng cho param
+                        parameters.Add($"@{propName}", propValue);
                     }
-
                 }
 
                 // Cắt bỏ dấu phẩy thừa ở cuối chuỗi
@@ -170,7 +166,7 @@ namespace MISA.Fresher.Infrastructure.Repository
                 // Tạo câu lệnh SQL
                 var sql = $"UPDATE { _className} SET {setValues} WHERE {_className}Id = '{entityId}'";
                 // Thực thi
-                var rowAffected = mySqlConnection.Execute(sql);
+                var rowAffected = mySqlConnection.Execute(sql, param: parameters);
 
                 return rowAffected;
             }

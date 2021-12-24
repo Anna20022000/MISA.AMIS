@@ -21,7 +21,7 @@ namespace MISA.Fresher.Core.Interfaces.Infrastructure
         /// <param name="entityId">Khóa chính</param>
         /// <returns>Đối tượng có khóa chính cần tìm</returns>
         /// createdBy: CTKimYen (15/12/2021)
-        public IEnumerable<T> GetById(Guid entityId);
+        public T GetById(Guid entityId);
 
         /// <summary>
         /// Thực hiện thêm mới đối tượng
@@ -49,12 +49,13 @@ namespace MISA.Fresher.Core.Interfaces.Infrastructure
         public int Delete(Guid entityId);
 
         /// <summary>
-        /// Thực hiện kiểm tra xem giá trị của property đó có tồn tại trong csdl không
+        /// Thực hiện kiểm tra giá trị thuộc tính của 1 đối tượng có tồn tại trong csdl
         /// </summary>
-        /// <param name="propName">Tên property của đối tượng</param>
-        /// <param name="condition">Giá trị của property đó</param>
-        /// <returns>True - tồn tại; False - không tồn tại</returns>
-        public bool CheckExist(string propName, string condition);
+        /// <param name="propName">Tên thuộc tính</param>
+        /// <param name="propValue">Giá trị của thuộc tính</param>
+        /// <param name="entityId">Giá trị Khóa chính của đối tượng (nếu có)</param>
+        /// <returns>true - đã tồn tại; false - chưa tồn tại</returns>
+        public bool CheckExist(string propName, string propValue, string entityId);
         
 
     }

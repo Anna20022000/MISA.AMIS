@@ -61,6 +61,42 @@ namespace MISA.Fresher.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thông tin {0} &lt;{1}&gt; đã tồn tại trong hệ thống..
+        /// </summary>
+        public static string Error_Msg_Duplicate {
+            get {
+                return ResourceManager.GetString("Error_Msg_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin {0} không được để trống..
+        /// </summary>
+        public static string Error_Msg_Empty {
+            get {
+                return ResourceManager.GetString("Error_Msg_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin {0} không đúng định dạng..
+        /// </summary>
+        public static string Error_Msg_Invalid {
+            get {
+                return ResourceManager.GetString("Error_Msg_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin {0} không được dài quá {1} ký tự..
+        /// </summary>
+        public static string Error_Msg_Length {
+            get {
+                return ResourceManager.GetString("Error_Msg_Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dữ liệu đầu vào không hợp lệ..
         /// </summary>
         public static string ExceptionDevMsgError {

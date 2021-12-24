@@ -9,6 +9,6 @@ namespace MISA.Fresher.Core.Interfaces.Service
 {
     public interface IEmployeeService : IBaseService<Employee>
     {
-        public object GetPaging(int limit, int pageIndex);
+        public object GetPaging(int limit, int pageIndex, string searchText);
     }
 }
