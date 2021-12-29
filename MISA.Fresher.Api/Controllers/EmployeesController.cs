@@ -19,6 +19,7 @@ namespace MISA.Fresher.Api.Controllers
 {
     public class EmployeesController : MISABaseController<Employee>
     {
+        #region Declare and contructor
         IEmployeeService _employeeService;
         IEmployeeRepository _employeeRepository;
         public EmployeesController(IEmployeeRepository employeeRepository, IEmployeeService employeeService)
@@ -27,24 +28,50 @@ namespace MISA.Fresher.Api.Controllers
             _employeeService = employeeService;
             _employeeRepository = employeeRepository;
         }
+        #endregion
 
+        #region Function
+        /// <summary>
+        /// Phân trang và tìm kiếm
+        /// </summary>
+        /// <param name="limit">số bản ghi trên trang</param>
+        /// <param name="pageIndex">số trang hiện tại</param>
+        /// <param name="searchText">điều kiện lọc</param>
+        /// <returns>Dữ liệu thỏa mãn điều kiện lọc; Tổng số bản ghi; Tổng số trang</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpGet("filter")]
         public IActionResult GetPaging(int limit, int pageIndex, string searchText)
         {
             return Ok(_employeeService.GetPaging(limit, pageIndex, searchText));
         }
 
-        [HttpGet("NewEmployeeCode")]
+        /// <summary>
+        /// Lấy ra mã nhân viên mới
+        /// </summary>
+        /// <returns>Mã nhân viên mới</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
+        [HttpGet("newEmployeeCode")]
         public IActionResult GetNewCode()
         {
             return Ok(_employeeRepository.GetNewCode());
         }
 
-
+        /// <summary>
+        /// Xóa nhiều bản ghi
+        /// </summary>
+        /// <param name="ListId">Danh sách một chuỗi các khóa chính</param>
+        /// <returns>Số bản ghi xóa thành công</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpDelete("deleteMulti")]
-        public IActionResult DeleteMulti([FromBody] string ListId)
+        public IActionResult DeleteMulti([FromBody] List<string> ListId)
         {
-            var res = _employeeRepository.DeleteMultiRecord(ListId);
+            string ids = null;
+            foreach (var item in ListId)
+            {
+                ids += $"{item},";
+            }
+            ids = ids.Substring(0, ids.Length - 1);
+            var res = _employeeRepository.DeleteMultiRecord(ids);
             if (res > 0)
             {
                 return StatusCode(200, res);
@@ -52,92 +79,24 @@ namespace MISA.Fresher.Api.Controllers
             return null;
         }
 
+        /// <summary>
+        /// Thực hiện xuất dữ liệu ra file excel
+        /// </summary>
+        /// <returns>File excel</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpGet("export")]
         public IActionResult Export()
         {
-            // query data from database
-            var list = _employeeRepository.GetAll().ToList();
-
-            var stream = new MemoryStream();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using (var package = new ExcelPackage(stream))
-            {
-                var workSheet = package.Workbook.Worksheets.Add("MISA_nhan_vien");
-                workSheet.Row(1).Style.Font.Bold = true; 
-                workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                workSheet.Row(1).Style.Fill.PatternType = ExcelFillStyle.Solid;
-                workSheet.Row(1).Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-                workSheet.DefaultRowHeight = 20;
-                workSheet.Cells[1,1].Value = "STT";
-                // customize tên header của file excel
-                var employee = new Employee();
-                // lấy các thuộc tính của nhân viên
-                var properties = employee.GetType().GetProperties();
-
-                int indexHeader = 2;
-                
-                // HEADER
-                for (int i = 1; i < properties.Length; i++)
-                {
-                    // lấy tên hiển thị đầu tiên của thuộc tính
-                    var PropertyNameAttributes = properties[i].GetCustomAttributes(typeof(PropertyName), true);
-                    // loại bỏ các thuộc tính không có 'tên hiển thị', có kiểu Guid, Gender
-                    if (PropertyNameAttributes.Length > 0 && properties[i].GetType() != typeof(Guid) && properties[i].GetType() != typeof(Gender))
-                    {
-                        // add vào header của file excel
-                        workSheet.Cells[1, indexHeader].Value = (PropertyNameAttributes[0] as PropertyName).Name;
-                        indexHeader++;
-                    }
-                }
-                // BODY
-                // lấy dữ liệu thêm vào excel
-                // duyệt các nhân viên
-                for (int i = 0; i < list.Count(); i++)
-                {
-                    int indexColBody = 2; // chỉ số cột
-                    // lấy ra STT
-                    workSheet.Cells[ i+2, 1].Value = i+1;
-
-                    // duyệt các thuộc tính để tương tự với phần header
-                    for (int j = 1; j < properties.Length; j++)
-                    {
-                        var propertyNameAttr = properties[j].GetCustomAttributes(typeof(PropertyName), true);
-
-                        // nếu thuộc tính có xuất file: cột +1
-                        if (propertyNameAttr.Length > 0 && properties[j].GetType() != typeof(Guid) && properties[j].GetType() != typeof(Gender))
-                        {
-                            // xử lí các kiểu dữ liệu datetime
-                            if ((propertyNameAttr[0] as PropertyName).Name == "Ngày sinh" || (propertyNameAttr[0] as PropertyName).Name == "Ngày cấp")
-                            {
-                                if (properties[j].GetValue(list[i]) != null && !string.IsNullOrEmpty(properties[j].GetValue(list[i]).ToString().Trim()))
-                                {
-                                    DateTime dt = DateTime.ParseExact(properties[j].GetValue(list[i]).ToString(), "d/M/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
-                                    workSheet.Cells[i+2, indexColBody].Value = dt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                    //workSheet.Cells[i + 2, indexColBody].Style.Border.Top.Style = workSheet.Cells[i + 2, indexColBody].Style.Border.Left.Style = workSheet.Cells[i + 2, indexColBody].Style.Border.Right.Style = workSheet.Cells[i + 2, indexColBody].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-
-                                }
-                            }
-                            else // các kiểu dữ liệu khác datetime
-                            {
-                                workSheet.Cells[i+2, indexColBody].Value = properties[j].GetValue(list[i]);
-                                //workSheet.Cells[i + 2, indexColBody].Style.Border.Top.Style = workSheet.Cells[i + 2, indexColBody].Style.Border.Left.Style = workSheet.Cells[i + 2, indexColBody].Style.Border.Right.Style = workSheet.Cells[i + 2, indexColBody].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-
-                            }
-                            indexColBody++;
-                        }
-                        // độ rộng tự động fit với dữ liệu
-                        workSheet.Column(j).AutoFit();
-                    }
-                }
-
-                // lưu lại
-                package.Save();
-            }
+            // lấy về stream để tạo file excel
+            Stream stream = _employeeRepository.ExportToExcel();
             stream.Position = 0;
-            string excelName = $"MISA-Employees-{DateTime.Now.ToString("dd-MM-yyy HH-mm-ss")}.xlsx";
+            // set filename cho file excel
+            string excelName = $"Danh_sach_nhan_vien_{DateTime.Now.ToString("dd-MM-yyy HH-mm-ss")}.xlsx";
+
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        #endregion
 
     }
 }

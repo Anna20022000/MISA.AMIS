@@ -13,6 +13,7 @@ namespace MISA.Fresher.Core.Services
 {
     public class BaseService<T> : IBaseService<T>
     {
+        #region Declare and Contructor
         IBaseRepository<T> _baseRepository;
         protected string _className;
         public BaseService(IBaseRepository<T> baseRepository)
@@ -20,6 +21,9 @@ namespace MISA.Fresher.Core.Services
             _baseRepository = baseRepository;
             _className = typeof(T).Name;
         }
+        #endregion
+
+        #region Function
         public int? Insert(T entity)
         {
             // validate chung - cho base xử lý
@@ -60,8 +64,6 @@ namespace MISA.Fresher.Core.Services
                 // Lấy ra giá trị của property đang duyệt
                 var propValue = prop.GetValue(entity);
 
-
-                //var propNotEmpties = prop.GetCustomAttributes(typeof(NotEmpty), true);
                 // Lấy ra tên hiển thị nếu được đặt attr PropertyName
                 var propPropertyNames = prop.GetCustomAttributes(typeof(PropertyName), true);
                 var propMaxLengths = prop.GetCustomAttributes(typeof(MaxLength), true);
@@ -81,31 +83,6 @@ namespace MISA.Fresher.Core.Services
                         errMsg.Add(string.Format(Properties.Resources.Error_Msg_Empty, propNameDisplay));
                     }
                 }
-                // Kiểm tra Email
-                if (propValue != null && prop.IsDefined(typeof(Email), false))
-                {
-                    Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",
-                                                RegexOptions.CultureInvariant | RegexOptions.Singleline);
-                    bool isValidEmail = regex.IsMatch(propValue.ToString().Trim());
-                    if (!isValidEmail)
-                    {
-                        errMsg.Add(string.Format(Properties.Resources.Error_Msg_Invalid, propNameDisplay));
-                    }
-                }
-
-                // Kiểm tra số điện thoại
-                if (propValue != null && prop.IsDefined(typeof(PhoneNumber), false) && propValue != null)
-                {
-                    Regex regex = new Regex(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$",
-                                                RegexOptions.CultureInvariant | RegexOptions.Singleline);
-
-                    bool isValidPhoneNumber = regex.IsMatch(propValue.ToString().Trim());
-                    if (!isValidPhoneNumber)
-                    {
-                        errMsg.Add(string.Format(Properties.Resources.Error_Msg_Invalid, propNameDisplay));
-                    }
-                }
-
                 // Kiểm tra độ dài
                 // Nếu được đặt attr MaxLength
                 if (propMaxLengths.Length > 0)
@@ -175,14 +152,24 @@ namespace MISA.Fresher.Core.Services
                     {
                         // lấy ra giá trị prop hiện tại của đối tượng cần sửa
                         var propValueEnityCurrent = prop.GetValue(entityCurrent);
-                        int a = string.Compare(propValue.ToString().Trim(), propValueEnityCurrent.ToString().Trim(), false);
-                        if (string.Compare(propValue.ToString().Trim(),propValueEnityCurrent.ToString().Trim(), false) != 0)
+                        if (propValueEnityCurrent != null)
                         {
-                            if (_baseRepository.CheckExist(propNameOriginal, propValue.ToString().Trim(), propValueEnityId.ToString()))
+                            if (string.Compare(propValue.ToString().Trim(), propValueEnityCurrent.ToString().Trim(), false) != 0)
                             {
-                                errMsg.Add(string.Format(Properties.Resources.Error_Msg_Duplicate,propNameDisplay, propValue));
+                                if (_baseRepository.CheckExist(propNameOriginal, propValue.ToString().Trim(), propValueEnityId.ToString()))
+                                {
+                                    errMsg.Add(string.Format(Properties.Resources.Error_Msg_Duplicate, propNameDisplay, propValue));
+                                }
                             }
                         }
+                        else
+                        {
+                            if (_baseRepository.CheckExist(propNameOriginal, propValue.ToString().Trim(), string.Empty))
+                            {
+                                errMsg.Add(string.Format(Properties.Resources.Error_Msg_Duplicate, propNameDisplay, propValue));
+                            }
+                        }
+
                     }
                     // THÊM MỚI
                     else
@@ -194,6 +181,19 @@ namespace MISA.Fresher.Core.Services
                     }
 
                 }
+
+                // Kiểm tra Email
+                if (propValue != null && !string.IsNullOrEmpty(propValue.ToString().Trim()) && prop.IsDefined(typeof(Email), false))
+                {
+                    Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",
+                                                RegexOptions.CultureInvariant | RegexOptions.Singleline);
+                    bool isValidEmail = regex.IsMatch(propValue.ToString().Trim());
+                    if (!isValidEmail)
+                    {
+                        errMsg.Add(string.Format(Properties.Resources.Error_Msg_Invalid, propNameDisplay));
+                    }
+                }
+
             }
             // Nếu có lỗi ném ra một ngoại lệ MISAResponseNotValidException
             if (errMsg.Count() > 0)
@@ -221,5 +221,6 @@ namespace MISA.Fresher.Core.Services
 
             return 0;
         }
+        #endregion
     }
 }

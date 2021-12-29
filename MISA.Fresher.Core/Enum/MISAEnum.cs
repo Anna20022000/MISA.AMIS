@@ -18,9 +18,9 @@ namespace MISA.Fresher.Core.Enum
         {
             var enumPropertyName = misaEnum.ToString();
             var enumName = misaEnum.GetType().Name;
-            var languageCode = Common.Common.LanguageCode;
+            //var languageCode = Common.Common.LanguageCode;
 
-            var resourceText = MISA.Fresher.Core.Properties.Resources.ResourceManager.GetString($"{languageCode}_Enum_{enumName}_{enumPropertyName}");
+            var resourceText = Properties.Resources.ResourceManager.GetString($"VI_Enum_{enumName}_{enumPropertyName}");
             return resourceText;
         }
     }
@@ -43,6 +43,42 @@ namespace MISA.Fresher.Core.Enum
         /// Khác
         /// </summary>
         Other = 2
+    }
+
+    /// <summary>
+    /// mã trạng thái HTTP res
+    /// </summary>
+    /// createdBy: CTKimYen (27/12/2021)
+    public enum HttpStatusCode
+    {
+        /// <summary>
+        /// Thành công
+        /// </summary>
+        Ok = 200,
+        /// <summary>
+        /// Thêm mới thành công
+        /// </summary>
+        Created = 201,
+        /// <summary>
+        /// Yêu cầu được chấp nhận nhưng việc xử lý chưa hoàn thành
+        /// </summary>
+        Accepted = 202,
+        /// <summary>
+        /// Yêu cầu đã được xử lý thành công nhưng phản hổi trống
+        /// </summary>
+        NoContent = 204,
+        /// <summary>
+        /// Máy chủ không hiểu được yêu cầu - lỗi dữ liệu gửi về
+        /// </summary>
+        BadRequest = 400,
+        /// <summary>
+        /// Request resource không tồn tại trên máy chủ
+        /// </summary>
+        NotFound = 404,
+        /// <summary>
+        /// Lỗi xử lý phía máy chủ
+        /// </summary>
+        InternalServerError = 500
     }
 
 }

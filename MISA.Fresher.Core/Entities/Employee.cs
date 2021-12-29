@@ -19,7 +19,6 @@ namespace MISA.Fresher.Core.Entities
         /// <summary>
         /// khóa chính
         /// </summary>
-        [PropertyName("Khóa chính")]
         public Guid EmployeeId { get; set; }
 
         /// <summary>
@@ -28,6 +27,7 @@ namespace MISA.Fresher.Core.Entities
         [NotEmpty]
         [Unique]
         [PropertyName("Mã nhân viên")]
+        [ColumnFileExport("Mã nhân viên")]
         public string EmployeeCode { get; set; }
 
         /// <summary>
@@ -35,6 +35,7 @@ namespace MISA.Fresher.Core.Entities
         /// </summary>
         [NotEmpty]
         [PropertyName("Họ và tên")]
+        [ColumnFileExport("Tên nhân viên")]
         public string EmployeeName { get; set; }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace MISA.Fresher.Core.Entities
         /// </summary>
         [ReadOnly]
         [PropertyName("Giới tính")]
+        [ColumnFileExport("Giới tính")]
         public string GenderName
         {
             get
@@ -60,28 +62,27 @@ namespace MISA.Fresher.Core.Entities
         /// Ngày sinh
         /// </summary>
         [PropertyName("Ngày sinh")]
+        [ColumnFileExport("Ngày sinh")]
         public DateTime? DateOfBirth { get; set; }
 
         /// <summary>
-        /// Số điện thoại
+        /// Số điện thoại di động
         /// </summary>
-        [Unique]
         [PhoneNumber]
+        [PropertyName("Số điện thoại di động")]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Số điện thoại cố định
         /// </summary>
-        [Unique]
         [PhoneNumber]
+        [PropertyName("Số điện thoại cố định")]
         public string TelephoneNumber { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
-        [Unique]
         [Email]
-        [PropertyName("Email")]
         public string Email { get; set; }
 
         /// <summary>
@@ -94,22 +95,26 @@ namespace MISA.Fresher.Core.Entities
         /// </summary>
         public Guid? DepartmentId { get; set; }
 
-        /// <summary>
-        /// Tên phòng ban
-        /// </summary>
-        [ReadOnly]
-        [PropertyName("Phòng ban")]
-        public string DepartmentName { get; set; }
 
         /// <summary>
         /// Tên vị trí/ chức vụ
         /// </summary>
         [PropertyName("Chức danh")]
+        [ColumnFileExport("Chức danh")]
         public string PositionName { get; set; }
+
+        /// <summary>
+        /// Tên phòng ban
+        /// </summary>
+        [ReadOnly]
+        [PropertyName("Đơn vị")]
+        [ColumnFileExport("Tên đơn vị")]
+        public string DepartmentName { get; set; }
 
         /// <summary>
         /// Số CMND/ Căn cước
         /// </summary>
+        [PropertyName("Số CMND")]
         public string IdentityNumber { get; set; }
 
         /// <summary>
@@ -126,17 +131,20 @@ namespace MISA.Fresher.Core.Entities
         /// tài khoản ngân hàng
         /// </summary>
         [PropertyName("Số tài khoản ngân hàng")]
+        [ColumnFileExport("Số tài khoản")]
         public string BankAccount { get; set; }
 
         /// <summary>
         /// tên ngân hàng
         /// </summary>
         [PropertyName("Tên ngân hàng")]
+        [ColumnFileExport("Tên ngân hàng")]
         public string BankName { get; set; }
 
         /// <summary>
         /// chi nhánh ngân hàng
         /// </summary>
+        [PropertyName("Chi nhánh ngân hàng")]
         public string BankBranch { get; set; }
 
         /// <summary>

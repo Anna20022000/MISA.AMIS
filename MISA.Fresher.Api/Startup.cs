@@ -35,6 +35,7 @@ namespace MISA.Fresher.Api
                 options.AddPolicy("AllowAnyCorsPolicy", policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             });
 
+            // Middleware
             services.AddControllers(options =>
             { 
                 // add the action filter to the filters collection:
@@ -42,7 +43,6 @@ namespace MISA.Fresher.Api
             });
 
             //Config DI
-
             services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
             services.AddTransient(typeof(IBaseService<>),typeof(BaseService<>));
 

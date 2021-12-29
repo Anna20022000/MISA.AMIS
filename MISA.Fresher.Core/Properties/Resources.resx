@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Error_Msg_Duplicate" xml:space="preserve">
-    <value>Thông tin {0} &lt;{1}&gt; đã tồn tại trong hệ thống.</value>
+    <value>Thông tin {0} &lt;{1}&gt; đã tồn tại trong hệ thống, vui lòng kiểm tra lại.</value>
   </data>
   <data name="Error_Msg_Empty" xml:space="preserve">
     <value>Thông tin {0} không được để trống.</value>
@@ -129,8 +129,17 @@
   <data name="Error_Msg_Length" xml:space="preserve">
     <value>Thông tin {0} không được dài quá {1} ký tự.</value>
   </data>
+  <data name="ExcelSheetName" xml:space="preserve">
+    <value>DANH SÁCH NHÂN VIÊN</value>
+  </data>
+  <data name="ExceptionAcceptedMsgError" xml:space="preserve">
+    <value>Yêu cầu được chấp nhận nhưng việc xử lý chưa hoàn thành.</value>
+  </data>
   <data name="ExceptionDevMsgError" xml:space="preserve">
     <value>Dữ liệu đầu vào không hợp lệ.</value>
+  </data>
+  <data name="ExceptionNoContentMsgError" xml:space="preserve">
+    <value>Không có nội dung trả về cho yêu cầu này.</value>
   </data>
   <data name="ExceptionUserMsgError" xml:space="preserve">
     <value>Có lỗi xảy ra vui lòng liên hệ MISA để được trợ giúp.</value>
@@ -142,6 +151,6 @@
     <value>Nam</value>
   </data>
   <data name="VI_Enum_Gender_Other" xml:space="preserve">
-    <value>Giới tính khác</value>
+    <value>Khác</value>
   </data>
 </root>

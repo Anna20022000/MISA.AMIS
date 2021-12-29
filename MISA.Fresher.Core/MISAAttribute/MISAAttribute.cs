@@ -83,6 +83,18 @@ namespace MISA.Fresher.Core.MISAAttribute
     {
 
     }
-
+    /// <summary>
+    /// Attribute dùng để đánh dấu là cột thông tin trong file export
+    /// CreateBy: CTKimYen (24/12/2021)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ColumnFileExport : Attribute
+    {
+        public string Name;
+        public ColumnFileExport(string name)
+        {
+            this.Name = name;
+        }
+    }
 
 }

@@ -26,6 +26,7 @@ namespace MISA.Fresher.Api.Controllers
         /// <summary>
         /// Lấy toàn bộ dữ liệu
         /// </summary>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpGet]
         public IActionResult Get()
         {
@@ -38,6 +39,7 @@ namespace MISA.Fresher.Api.Controllers
         /// </summary>
         /// <param name="Id">Khóa chính</param>
         /// <returns>Đối tượng có khóa chính cần lấy</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpGet("{Id}")]
         public IActionResult GetById(Guid Id)
         {
@@ -54,6 +56,7 @@ namespace MISA.Fresher.Api.Controllers
         /// </summary>
         /// <param name="entity">Đối tượng</param>
         /// <returns>Số bản ghi thêm mới thành công</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpPost]
         public IActionResult Insert(T entity)
         {
@@ -67,6 +70,7 @@ namespace MISA.Fresher.Api.Controllers
         /// <param name="entity">Đối tượng cần sửa</param>
         /// <param name="entityId">Khóa chính của đối tượng</param>
         /// <returns>Số bản ghi cập nhật thành công</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpPut("{Id}")]
         public IActionResult Update(T entity, Guid Id)
         {
@@ -83,6 +87,7 @@ namespace MISA.Fresher.Api.Controllers
         /// </summary>
         /// <param name="Id">Khóa chính</param>
         /// <returns>Số lượng bản ghi xóa thành công</returns>
+        /// CreatedBy: CTKimYen (23/12/2021)
         [HttpDelete("{Id}")]
         public IActionResult Delete(Guid Id)
         {

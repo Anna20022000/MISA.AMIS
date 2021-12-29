@@ -61,7 +61,7 @@ namespace MISA.Fresher.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thông tin {0} &lt;{1}&gt; đã tồn tại trong hệ thống..
+        ///   Looks up a localized string similar to Thông tin {0} &lt;{1}&gt; đã tồn tại trong hệ thống, vui lòng kiểm tra lại..
         /// </summary>
         public static string Error_Msg_Duplicate {
             get {
@@ -97,11 +97,38 @@ namespace MISA.Fresher.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DANH SÁCH NHÂN VIÊN.
+        /// </summary>
+        public static string ExcelSheetName {
+            get {
+                return ResourceManager.GetString("ExcelSheetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yêu cầu được chấp nhận nhưng việc xử lý chưa hoàn thành..
+        /// </summary>
+        public static string ExceptionAcceptedMsgError {
+            get {
+                return ResourceManager.GetString("ExceptionAcceptedMsgError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dữ liệu đầu vào không hợp lệ..
         /// </summary>
         public static string ExceptionDevMsgError {
             get {
                 return ResourceManager.GetString("ExceptionDevMsgError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không có nội dung trả về cho yêu cầu này..
+        /// </summary>
+        public static string ExceptionNoContentMsgError {
+            get {
+                return ResourceManager.GetString("ExceptionNoContentMsgError", resourceCulture);
             }
         }
         
@@ -133,7 +160,7 @@ namespace MISA.Fresher.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giới tính khác.
+        ///   Looks up a localized string similar to Khác.
         /// </summary>
         public static string VI_Enum_Gender_Other {
             get {

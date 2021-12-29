@@ -13,20 +13,17 @@ namespace MISA.Fresher.Core.Services
 {
     public class EmployeeService : BaseService<Employee>, IEmployeeService
     {
+        #region Declare and Contructor
         IEmployeeRepository _employeeRepository;
         public EmployeeService(IBaseRepository<Employee> baseRepository, IEmployeeRepository employeeRepository) : base(baseRepository)
         {
             _employeeRepository = employeeRepository;
         }
-
+        #endregion
         public object GetPaging(int limit, int pageIndex, string searchText)
         {
             return _employeeRepository.GetPaging(limit, pageIndex, searchText);
         }
 
-        //protected override bool ValidateObjCustom(Employee entity)
-        //{
-            
-        //}
     }
 }
